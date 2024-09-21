@@ -1,8 +1,8 @@
-import { Ship } from "./ship";
+import { Ship } from "./ship.js";
 
 export class Gameboard {
   constructor() {
-    this.board = new Array(10).fill(new Array(10).fill(0));
+    this.board = Array.from({ length: 10 }, () => new Array(10).fill(0));
     this.ships = [];
   }
   createShip(shipType) {
@@ -23,6 +23,21 @@ export class Gameboard {
     });
   }
   placeShip(ship, x, y, position) {
-    this.board[x][y] = ship.type;
+    if (position === "vertical") {
+      if (x + ship.size > 10) {
+        throw new Error("Ship out of bounds!");
+      }
+      for (let i = 0; i < ship.size; i++) {
+        this.board[x + i][y] = ship.type;
+      }
+    } else {
+      if (y + ship.size > 10) {
+        throw new Error("Ship out of bounds!");
+      }
+
+      for (let i = 0; i < ship.size; i++) {
+        this.board[x][y + i] = ship.type;
+      }
+    }
   }
 }

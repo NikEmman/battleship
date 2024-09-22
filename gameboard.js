@@ -4,6 +4,8 @@ export class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => new Array(10).fill(0));
     this.ships = [];
+    this.missedAttacks = [];
+    this.successfulAttacks = [];
   }
   createShip(shipType) {
     const ship = new Ship();
@@ -54,5 +56,20 @@ export class Gameboard {
       (position === "horizontal" && y + ship.size > 10)
     );
   }
-  // if ship placed move from this.ships to this.placedShips?
+  receiveAttack(x, y) {
+    if (this.board[x][y] === 0) {
+      this.missedAttacks.push([x, y]);
+    } else {
+      this.successfulAttacks.push([x, y]);
+      for (const ship of this.ships) {
+        if (ship.type === this.board[x][y]) {
+          ship.hit();
+        }
+      }
+    }
+  }
+  isAllShipsSunk() {
+    const sunk = (ship) => ship.isSunk();
+    return this.ships.every(sunk);
+  }
 }

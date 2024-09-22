@@ -52,3 +52,34 @@ it("Should throw an error if placement squares are occupied by another ship", ()
     gameboard.placeShip(gameboard.ships[1], 0, 1, "horizontal")
   ).toThrow("Occupied space!");
 });
+it("Should be able to receive an attack, and keep track if it missed", () => {
+  gameboard.receiveAttack(0, 1);
+  expect(gameboard.missedAttacks.includes([0, 1])).toBeTruthy;
+});
+it("Should be able to receive an attack, and keep track if successful", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  gameboard.receiveAttack(0, 1);
+  expect(gameboard.successfulAttacks.includes([0, 1])).toBeTruthy;
+});
+it("On successful attack, the ship in question should take a hit", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  gameboard.receiveAttack(0, 1);
+  expect(gameboard.ships[0].hits).toEqual(1);
+});
+it("When all ships are sunk it should be able to report it", () => {
+  gameboard.ships[0].hits = 3;
+  gameboard.ships[1].hits = 4;
+  gameboard.ships[2].hits = 2;
+  gameboard.ships[3].hits = 5;
+  gameboard.ships[4].hits = 3;
+  expect(gameboard.isAllShipsSunk()).toBeTruthy;
+});
+// not sure it's working
+it("When not all ships are sunk it should be able to report false", () => {
+  gameboard.ships[0].hits = 1;
+  gameboard.ships[1].hits = 1;
+  gameboard.ships[2].hits = 2;
+  gameboard.ships[3].hits = 1;
+  gameboard.ships[4].hits = 3;
+  expect(gameboard.isAllShipsSunk()).toBeFalsy;
+});

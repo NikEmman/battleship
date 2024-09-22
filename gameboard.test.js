@@ -40,11 +40,15 @@ it("Should be able to place a ship horizontally", () => {
 });
 it("Should throw an error if ship is out of bounds", () => {
   expect(() =>
-    gameboard.placeShip(gameboard.ships[0], 0, 9, "horizontal")
+    gameboard.placeShip(gameboard.ships[0], 0, 8, "horizontal")
   ).toThrow();
   expect(() =>
     gameboard.placeShip(gameboard.ships[0], 9, 1, "vertical")
   ).toThrow();
 });
-// test for extra square placement, according to ship size
-// test for vertical - horizontal
+it("Should throw an error if placement squares are occupied by another ship", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  expect(() =>
+    gameboard.placeShip(gameboard.ships[1], 0, 1, "horizontal")
+  ).toThrow("Occupied space!");
+});

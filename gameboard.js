@@ -23,21 +23,36 @@ export class Gameboard {
     });
   }
   placeShip(ship, x, y, position) {
-    if (position === "vertical") {
-      if (x + ship.size > 10) {
-        throw new Error("Ship out of bounds!");
-      }
-      for (let i = 0; i < ship.size; i++) {
-        this.board[x + i][y] = ship.type;
-      }
-    } else {
-      if (y + ship.size > 10) {
-        throw new Error("Ship out of bounds!");
-      }
+    if (this.isOutOfBounds(ship, x, y, position)) {
+      throw new Error("Ship out of bounds!");
+    }
+    if (this.isOccupied(ship, x, y, position)) {
+      throw new Error("Occupied space!");
+    }
 
-      for (let i = 0; i < ship.size; i++) {
-        this.board[x][y + i] = ship.type;
-      }
+    const isVertical = position === "vertical";
+    for (let i = 0; i < ship.size; i++) {
+      const newX = isVertical ? x + i : x;
+      const newY = isVertical ? y : y + i;
+      this.board[newX][newY] = ship.type;
     }
   }
+  isOccupied(ship, x, y, position) {
+    const isVertical = position === "vertical";
+    for (let i = 0; i < ship.size; i++) {
+      const newX = isVertical ? x + i : x;
+      const newY = isVertical ? y : y + i;
+      if (this.board[newX][newY] !== 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+  isOutOfBounds(ship, x, y, position) {
+    return (
+      (position === "vertical" && x + ship.size > 10) ||
+      (position === "horizontal" && y + ship.size > 10)
+    );
+  }
+  // if ship placed move from this.ships to this.placedShips?
 }

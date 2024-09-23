@@ -3,7 +3,6 @@ const { Ship } = require("./ship");
 let gameboard;
 beforeEach(() => {
   gameboard = new Gameboard();
-  gameboard.addShips();
 });
 it("It has a board", () => {
   expect(gameboard.board).toBeTruthy;
@@ -67,19 +66,18 @@ it("On successful attack, the ship in question should take a hit", () => {
   expect(gameboard.ships[0].hits).toEqual(1);
 });
 it("When all ships are sunk it should be able to report it", () => {
-  gameboard.ships[0].hits = 3;
-  gameboard.ships[1].hits = 4;
-  gameboard.ships[2].hits = 2;
+  gameboard.ships[0].hits = 5;
+  gameboard.ships[1].hits = 5;
+  gameboard.ships[2].hits = 5;
   gameboard.ships[3].hits = 5;
-  gameboard.ships[4].hits = 3;
-  expect(gameboard.isAllShipsSunk()).toBeTruthy;
+  gameboard.ships[4].hits = 5;
+  expect(gameboard.isAllShipsSunk()).toBeTruthy();
 });
-// not sure it's working
 it("When not all ships are sunk it should be able to report false", () => {
   gameboard.ships[0].hits = 1;
   gameboard.ships[1].hits = 1;
   gameboard.ships[2].hits = 2;
   gameboard.ships[3].hits = 1;
   gameboard.ships[4].hits = 3;
-  expect(gameboard.isAllShipsSunk()).toBeFalsy;
+  expect(gameboard.isAllShipsSunk()).toBeFalsy();
 });

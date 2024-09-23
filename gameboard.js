@@ -6,6 +6,7 @@ export class Gameboard {
     this.ships = [];
     this.missedAttacks = [];
     this.successfulAttacks = [];
+    this.addShips();
   }
   createShip(shipType) {
     const ship = new Ship();

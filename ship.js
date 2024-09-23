@@ -27,6 +27,6 @@ export class Ship {
     this.hits += 1;
   }
   isSunk() {
-    return this.hit === this.size;
+    return this.hits >= this.size;
   }
 }

@@ -49,11 +49,11 @@ it("Number of hits is two when hit twice", () => {
 it("It is not sunk when hit twice", () => {
   ship.hit();
   ship.hit();
-  expect(ship.isSunk()).toBeFalsey;
+  expect(ship.isSunk()).toBeFalsy();
 });
 it("It is sunk when hit 3 times", () => {
   ship.hit();
   ship.hit();
   ship.hit();
-  expect(ship.isSunk()).toBeTruthy;
+  expect(ship.isSunk()).toBeTruthy();
 });

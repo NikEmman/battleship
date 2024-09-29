@@ -1,0 +1,42 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  display: flex;
+}
+.container {
+  flex: 5;
+  display: flex;
+  gap: 2em;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  border: 2px solid black;
+  width: 23em;
+  height: 23em;
+}
+.cell {
+  width: 2em;
+  height: 2em;
+  border: 2px solid red;
+}
+
+.clicked {
+  animation-name: clickedCell;
+  animation-duration: 1.3s;
+}
+
+@keyframes clickedCell {
+  0% {
+    transform: rotate3d(1, 1, 1, 0deg);
+  }
+
+  100% {
+    transform: rotate3d(1, 1, 1, 360deg);
+  }
+}
+.hidden {
+  display: none;
+}

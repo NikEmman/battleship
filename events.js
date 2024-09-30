@@ -1,4 +1,5 @@
 import { Player } from "./player.js";
+import { renderBoards } from "./painter.js";
 
 let p1, p2;
 
@@ -12,6 +13,7 @@ document.querySelector("form").onsubmit = (e) => {
   const p2Name = document.getElementById("p2Name");
   p1 = new Player(p1Name.textContent);
   p2 = new Player(p2Name.textContent);
+  populateBoards(p1, p2);
   p1Name.value = "";
   p2Name.value = "";
   document.querySelector("form").classList.add("hidden");
@@ -20,14 +22,35 @@ document.querySelector("form").onsubmit = (e) => {
 document.querySelector(".enemyBoard").addEventListener("click", (e) => {
   const row = e.target.dataset.row;
   const column = e.target.dataset.column;
-  document.getElementById(
-    "playing"
-  ).textContent = `You clicked on row ${row} and column ${column}`;
   const clickedCell = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
   );
-  // clicked cell text content should be in draw module
-  clickedCell.textContent = "X";
+  p2.board.receiveAttack(row, column);
   clickedCell.classList.add("clicked");
-  //render boards (where missed textcontent = “💦” (U+1F4A6) , else if success = “🔥” (U+1F525) or w/e)
+  renderBoards(p1, p2);
 });
+
+//temp function for dev purpose. Will place ships for each board
+function populateBoards(p1, p2) {
+  const coords = [
+    [0, 1, "horizontal"],
+    [1, 1, "vertical"],
+    [0, 4, "vertical"],
+    [5, 2, "vertical"],
+    [5, 4, "horizontal"],
+  ];
+  for (let i = 0; i < 5; i++) {
+    p1.board.placeShip(
+      p1.board.ships[i],
+      coords[i][0],
+      coords[i][1],
+      coords[i][2]
+    );
+    p2.board.placeShip(
+      p1.board.ships[i],
+      coords[i][0],
+      coords[i][1],
+      coords[i][2]
+    );
+  }
+}

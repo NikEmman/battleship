@@ -3,14 +3,27 @@ import { Ship } from "./ship.js";
 export class Gameboard {
   constructor() {
     this.board = Array.from({ length: 10 }, () => new Array(10).fill(0));
-    this.ships = ["Cruiser", "Battleship", "Destroyer", "Carrier", "Submarine"];
+    this.ships = [];
     this.missedAttacks = [];
     this.successfulAttacks = [];
+    this.addShips();
   }
   createShip(shipType) {
     const ship = new Ship();
     ship.initialize(shipType);
     this.ships.push(ship);
+  }
+  addShips() {
+    const shipTypes = [
+      "Cruiser",
+      "Battleship",
+      "Destroyer",
+      "Carrier",
+      "Submarine",
+    ];
+    shipTypes.forEach((shipType) => {
+      this.createShip(shipType);
+    });
   }
   placeShip(ship, x, y, position) {
     if (this.isOutOfBounds(ship, x, y, position)) {

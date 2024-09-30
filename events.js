@@ -9,28 +9,30 @@ document.getElementById("start").addEventListener("click", () => {
 
 document.querySelector("form").onsubmit = (e) => {
   e.preventDefault();
-  const p1Name = document.getElementById("p1Name");
-  const p2Name = document.getElementById("p2Name");
-  p1 = new Player(p1Name.textContent);
-  p2 = new Player(p2Name.textContent);
+  const p1Name = document.getElementById("p1Name").value;
+  const p2Name = document.getElementById("p2Name").value;
+  p1 = new Player(p1Name);
+  p2 = new Player(p2Name);
   populateBoards(p1, p2);
-  p1Name.value = "";
-  p2Name.value = "";
+  document.getElementById("p1Name").value = "";
+  document.getElementById("p2Name").value = "";
   document.querySelector("form").classList.add("hidden");
-  //render boards
+  renderBoards(p1, p2); // Render boards initially
 };
-document.querySelector(".enemyBoard").addEventListener("click", (e) => {
-  const row = e.target.dataset.row;
-  const column = e.target.dataset.column;
-  const clickedCell = document.querySelector(
-    `[data-row="${row}"][data-column="${column}"]`
-  );
-  p2.board.receiveAttack(row, column);
-  clickedCell.classList.add("clicked");
-  renderBoards(p1, p2);
+
+// Add the event listener once
+document.querySelector(".container").addEventListener("click", (e) => {
+  if (e.target.classList.contains("cell") && e.target.closest(".enemyBoard")) {
+    const row = parseInt(e.target.dataset.row);
+    const column = parseInt(e.target.dataset.column);
+    if (!isNaN(row) && !isNaN(column)) {
+      p2.board.receiveAttack(row, column);
+      renderBoards(p1, p2); // Re-render boards after an attack
+    }
+  }
 });
 
-//temp function for dev purpose. Will place ships for each board
+// Temporary function for development purposes. Will place ships for each board.
 function populateBoards(p1, p2) {
   const coords = [
     [0, 1, "horizontal"],
@@ -47,7 +49,7 @@ function populateBoards(p1, p2) {
       coords[i][2]
     );
     p2.board.placeShip(
-      p1.board.ships[i],
+      p2.board.ships[i],
       coords[i][0],
       coords[i][1],
       coords[i][2]

@@ -1,36 +1,4 @@
-// export function renderBoards(self, enemy) {
-//   const container = document.querySelector(".container");
-//   container.innerHTML = ""; // Clear the container
-
-//   // Create the boards
-//   const myBoard = document.createElement("div");
-//   myBoard.classList.add("board", "myBoard");
-//   const enemyBoard = document.createElement("div");
-//   enemyBoard.classList.add("board", "enemyBoard");
-
-//   // Function to create cells for a board
-//   function createCells(boardArray, boardElement) {
-//     for (let row = 0; row < 10; row++) {
-//       for (let col = 0; col < 10; col++) {
-//         const cell = document.createElement("div");
-//         cell.classList.add("cell");
-//         cell.setAttribute("data-row", row);
-//         cell.setAttribute("data-column", col);
-//         cell.textContent = boardArray[row][col]; // Optional: Display the board content
-//         boardElement.appendChild(cell);
-//       }
-//     }
-//   }
-
-//   // Create cells for both boards
-//   createCells(self.board.board, myBoard);
-//   createCells(enemy.board.board, enemyBoard);
-
-//   // Append boards to the container
-//   container.appendChild(myBoard);
-//   container.appendChild(enemyBoard);
-// }
-export function renderBoards(self, enemy) {
+function renderBoards(self, enemy) {
   const container = document.querySelector(".container");
   container.innerHTML = ""; // Clear the container
 
@@ -74,7 +42,8 @@ export function renderBoards(self, enemy) {
             cell.textContent = "X"; // Red X for attacks on self board
             cell.style.color = "red";
           } else {
-            cell.textContent = ""; // Optional: Display the board content
+            cell.textContent =
+              boardArray[row][col] === 0 ? "" : boardArray[row][col]; // Optional: Display the board content
           }
         }
 
@@ -103,3 +72,5 @@ export function renderBoards(self, enemy) {
   container.appendChild(myBoard);
   container.appendChild(enemyBoard);
 }
+
+export { renderBoards };

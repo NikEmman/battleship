@@ -16,6 +16,13 @@ function renderBoards(self, enemy) {
     successfulAttacks,
     isEnemyBoard
   ) {
+    const shipSymbols = {
+      Cruiser: "🚢",
+      Battleship: "🛳️",
+      Destroyer: "🚤",
+      Carrier: "🛥️",
+      Submarine: "🛶",
+    };
     for (let row = 0; row < 10; row++) {
       for (let col = 0; col < 10; col++) {
         const cell = document.createElement("div");
@@ -42,8 +49,12 @@ function renderBoards(self, enemy) {
             cell.textContent = "X"; // Red X for attacks on self board
             cell.style.color = "red";
           } else {
-            cell.textContent =
-              boardArray[row][col] === 0 ? "" : boardArray[row][col]; // Optional: Display the board content
+            if (boardArray[row][col] === 0) {
+              cell.textContent = "";
+            } else {
+              cell.textContent = shipSymbols[boardArray[row][col]];
+              cell.title = boardArray[row][col];
+            }
           }
         }
 

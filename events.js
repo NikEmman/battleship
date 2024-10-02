@@ -77,10 +77,10 @@ async function showAttackEffect(e, container) {
 function populateBoards(p1, p2) {
   const coords = [
     [0, 1, "horizontal"],
-    [1, 1, "vertical"],
-    [0, 4, "vertical"],
+    [3, 0, "vertical"],
+    [0, 7, "vertical"],
     [5, 2, "vertical"],
-    [5, 4, "horizontal"],
+    [7, 7, "horizontal"],
   ];
   for (let i = 0; i < 5; i++) {
     p1.board.placeShip(

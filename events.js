@@ -23,24 +23,55 @@ document.querySelector("form").onsubmit = (e) => {
 // Add the event listener once
 document
   .querySelector(".container")
-  .addEventListener("click", async function (e) {
-    if (
-      e.target.classList.contains("cell") &&
-      e.target.closest(".enemyBoard")
-    ) {
-      const row = parseInt(e.target.dataset.row);
-      const column = parseInt(e.target.dataset.column);
-      if (!isNaN(row) && !isNaN(column)) {
-        p2.board.receiveAttack(row, column);
-        const boardRect = this.getBoundingClientRect();
-        const x = e.clientX - boardRect.left - 5;
-        const y = e.clientY - boardRect.top;
+  .addEventListener("click", handleBoardClick);
 
-        await showBomb(x, y);
-        renderBoards(p1, p2); // Re-render boards after an attack
-      }
+function handleBoardClick(e) {
+  if (isEnemyCell(e.target)) {
+    const { row, column } = getCellCoordinates(e.target);
+
+    if (isAttackAlreadyMade(row, column)) return;
+
+    if (isValidCoordinate(row, column)) {
+      p2.board.receiveAttack(row, column);
+      showAttackEffect(e, this);
+      renderBoards(p1, p2); // Re-render boards after an attack
     }
-  });
+  }
+}
+
+function isEnemyCell(target) {
+  return target.classList.contains("cell") && target.closest(".enemyBoard");
+}
+
+function getCellCoordinates(target) {
+  return {
+    row: parseInt(target.dataset.row),
+    column: parseInt(target.dataset.column),
+  };
+}
+
+function isAttackAlreadyMade(row, column) {
+  return (
+    attackExists(p2.board.successfulAttacks, row, column) ||
+    attackExists(p2.board.missedAttacks, row, column)
+  );
+}
+
+function attackExists(attacks, row, column) {
+  return attacks.some((attack) => attack[0] === row && attack[1] === column);
+}
+
+function isValidCoordinate(row, column) {
+  return !isNaN(row) && !isNaN(column);
+}
+
+async function showAttackEffect(e, container) {
+  const boardRect = container.getBoundingClientRect();
+  const x = e.clientX - boardRect.left - 5;
+  const y = e.clientY - boardRect.top;
+
+  await showBomb(x, y);
+}
 
 // Temporary function for development purposes. Will place ships for each board.
 function populateBoards(p1, p2) {

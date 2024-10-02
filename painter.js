@@ -80,21 +80,12 @@ function showBomb(x, y) {
     bombshell.style.top = `${y}px`;
     bombshell.style.display = "block";
 
-    // Animate the bombshell
-    bombshell.animate(
-      [
-        { transform: "translateY(-500px)", opacity: 1 },
-        { transform: "translateY(0)", opacity: 1 },
-      ],
-      {
-        duration: 1000,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
+    // Add the animation class
+    bombshell.classList.add("animate-bombshell");
 
-    // Hide the bombshell after animation and resolve the promise
+    // Remove the animation class and hide the bombshell after animation
     setTimeout(() => {
+      bombshell.classList.remove("animate-bombshell");
       bombshell.style.display = "none";
       resolve();
     }, 1000);

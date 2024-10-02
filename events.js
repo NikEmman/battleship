@@ -1,5 +1,5 @@
 import { Player } from "./player.js";
-import { renderBoards } from "./painter.js";
+import { renderBoards, showBomb } from "./painter.js";
 
 let p1, p2;
 
@@ -21,16 +21,26 @@ document.querySelector("form").onsubmit = (e) => {
 };
 
 // Add the event listener once
-document.querySelector(".container").addEventListener("click", (e) => {
-  if (e.target.classList.contains("cell") && e.target.closest(".enemyBoard")) {
-    const row = parseInt(e.target.dataset.row);
-    const column = parseInt(e.target.dataset.column);
-    if (!isNaN(row) && !isNaN(column)) {
-      p2.board.receiveAttack(row, column);
-      renderBoards(p1, p2); // Re-render boards after an attack
+document
+  .querySelector(".container")
+  .addEventListener("click", async function (e) {
+    if (
+      e.target.classList.contains("cell") &&
+      e.target.closest(".enemyBoard")
+    ) {
+      const row = parseInt(e.target.dataset.row);
+      const column = parseInt(e.target.dataset.column);
+      if (!isNaN(row) && !isNaN(column)) {
+        p2.board.receiveAttack(row, column);
+        const boardRect = this.getBoundingClientRect();
+        const x = e.clientX - boardRect.left - 5;
+        const y = e.clientY - boardRect.top;
+
+        await showBomb(x, y);
+        renderBoards(p1, p2); // Re-render boards after an attack
+      }
     }
-  }
-});
+  });
 
 // Temporary function for development purposes. Will place ships for each board.
 function populateBoards(p1, p2) {

@@ -21,6 +21,9 @@ body {
   width: 2em;
   height: 2em;
   border: 2px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .clicked {
@@ -38,5 +41,13 @@ body {
   }
 }
 .hidden {
+  display: none;
+}
+#bombshell {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
   display: none;
 }

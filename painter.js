@@ -72,5 +72,33 @@ function renderBoards(self, enemy) {
   container.appendChild(myBoard);
   container.appendChild(enemyBoard);
 }
+function showBomb(x, y) {
+  return new Promise((resolve) => {
+    const bombshell = document.getElementById("bombshell");
 
-export { renderBoards };
+    bombshell.style.left = `${x}px`;
+    bombshell.style.top = `${y}px`;
+    bombshell.style.display = "block";
+
+    // Animate the bombshell
+    bombshell.animate(
+      [
+        { transform: "translateY(-500px)", opacity: 1 },
+        { transform: "translateY(0)", opacity: 1 },
+      ],
+      {
+        duration: 1000,
+        easing: "ease-in-out",
+        fill: "forwards",
+      }
+    );
+
+    // Hide the bombshell after animation and resolve the promise
+    setTimeout(() => {
+      bombshell.style.display = "none";
+      resolve();
+    }, 1000);
+  });
+}
+
+export { renderBoards, showBomb };

@@ -1,5 +1,5 @@
 import { Player } from "./player.js";
-import { renderBoards, showBomb } from "./painter.js";
+import { renderBoards, showBomb, renderSunkenShips } from "./painter.js";
 
 let currentPlayer, enemyPlayer;
 
@@ -9,6 +9,8 @@ function switchTurn(currentPlayer, enemyPlayer) {
 
 document.getElementById("start").addEventListener("click", () => {
   document.querySelector("form").classList.remove("hidden");
+  document.querySelector("#title").classList.add("hidden");
+  document.querySelector(".hide").classList.add("hidden");
 });
 
 document.querySelector("form").onsubmit = (e) => {
@@ -21,6 +23,7 @@ document.querySelector("form").onsubmit = (e) => {
   document.getElementById("p1Name").value = "";
   document.getElementById("p2Name").value = "";
   document.querySelector("form").classList.add("hidden");
+  document.querySelector(".sunkenShips").innerHTML = "";
   renderBoards(currentPlayer, enemyPlayer); // Render boards initially
 };
 
@@ -39,7 +42,9 @@ async function handleBoardClick(e) {
       enemyPlayer.board.receiveAttack(row, column);
       await showAttackEffect(e, this);
       renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
+      renderSunkenShips(enemyPlayer);
       document.querySelector(".hide").classList.remove("hidden");
+      document.querySelector("#title").classList.remove("hidden");
     }
   }
 }
@@ -106,10 +111,16 @@ document.querySelector(".hide").addEventListener("click", () => {
   document.querySelector(".container").classList.add("hidden");
   document.querySelector(".hide").classList.add("hidden");
   document.querySelector(".switch").classList.remove("hidden");
+  document.querySelector(".sunkenShips").classList.add("hidden");
+  document.getElementById("title").classList.add("hidden");
 });
 document.querySelector(".switch").addEventListener("click", () => {
   [currentPlayer, enemyPlayer] = switchTurn(currentPlayer, enemyPlayer);
   document.querySelector(".container").classList.remove("hidden");
   document.querySelector(".switch").classList.add("hidden");
+  document.getElementById("title").classList.remove("hidden");
+
+  renderSunkenShips(enemyPlayer);
   renderBoards(currentPlayer, enemyPlayer);
 });
+//to do : fix renderSunkenShips

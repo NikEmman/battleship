@@ -102,5 +102,23 @@ function showBomb(x, y) {
     }, 1000);
   });
 }
+function renderSunkenShips(player) {
+  const sunkenShips = document.querySelector(".sunkenShips");
+  sunkenShips.innerHTML = "";
 
-export { renderBoards, showBomb };
+  for (let ship of player.board.sunkenShips) {
+    const shipElement = document.createElement("div");
+    shipElement.classList.add("ship");
+    const shipSymbols = {
+      Cruiser: "🚢",
+      Battleship: "🛳️",
+      Destroyer: "🚤",
+      Carrier: "🛥️",
+      Submarine: "🛶",
+    };
+    shipElement.textContent = `${shipSymbols[ship.type]} - ${ship.type}`;
+    sunkenShips.appendChild(shipElement);
+  }
+}
+
+export { renderBoards, showBomb, renderSunkenShips };

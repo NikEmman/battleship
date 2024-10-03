@@ -7,6 +7,7 @@ export class Gameboard {
     this.missedAttacks = [];
     this.successfulAttacks = [];
     this.addShips();
+    this.sunkenShips = [];
   }
   createShip(shipType) {
     const ship = new Ship();
@@ -65,6 +66,9 @@ export class Gameboard {
       for (const ship of this.ships) {
         if (ship.type === this.board[x][y]) {
           ship.hit();
+          if (ship.isSunk()) {
+            this.sunkenShips.push(ship);
+          }
         }
       }
     }

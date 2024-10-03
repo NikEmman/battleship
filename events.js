@@ -1,7 +1,11 @@
 import { Player } from "./player.js";
 import { renderBoards, showBomb } from "./painter.js";
 
-let p1, p2;
+let currentPlayer, enemyPlayer;
+
+function switchTurn(currentPlayer, enemyPlayer) {
+  return [enemyPlayer, currentPlayer];
+}
 
 document.getElementById("start").addEventListener("click", () => {
   document.querySelector("form").classList.remove("hidden");
@@ -11,13 +15,13 @@ document.querySelector("form").onsubmit = (e) => {
   e.preventDefault();
   const p1Name = document.getElementById("p1Name").value;
   const p2Name = document.getElementById("p2Name").value;
-  p1 = new Player(p1Name);
-  p2 = new Player(p2Name);
-  populateBoards(p1, p2);
+  currentPlayer = new Player(p1Name);
+  enemyPlayer = new Player(p2Name);
+  populateBoards(currentPlayer, enemyPlayer);
   document.getElementById("p1Name").value = "";
   document.getElementById("p2Name").value = "";
   document.querySelector("form").classList.add("hidden");
-  renderBoards(p1, p2); // Render boards initially
+  renderBoards(currentPlayer, enemyPlayer); // Render boards initially
 };
 
 // Add the event listener once
@@ -25,16 +29,17 @@ document
   .querySelector(".container")
   .addEventListener("click", handleBoardClick);
 
-function handleBoardClick(e) {
+async function handleBoardClick(e) {
   if (isEnemyCell(e.target)) {
     const { row, column } = getCellCoordinates(e.target);
 
     if (isAttackAlreadyMade(row, column)) return;
 
     if (isValidCoordinate(row, column)) {
-      p2.board.receiveAttack(row, column);
-      showAttackEffect(e, this);
-      renderBoards(p1, p2); // Re-render boards after an attack
+      enemyPlayer.board.receiveAttack(row, column);
+      await showAttackEffect(e, this);
+      renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
+      document.querySelector(".hide").classList.remove("hidden");
     }
   }
 }
@@ -52,8 +57,8 @@ function getCellCoordinates(target) {
 
 function isAttackAlreadyMade(row, column) {
   return (
-    attackExists(p2.board.successfulAttacks, row, column) ||
-    attackExists(p2.board.missedAttacks, row, column)
+    attackExists(enemyPlayer.board.successfulAttacks, row, column) ||
+    attackExists(enemyPlayer.board.missedAttacks, row, column)
   );
 }
 
@@ -97,3 +102,14 @@ function populateBoards(p1, p2) {
     );
   }
 }
+document.querySelector(".hide").addEventListener("click", () => {
+  document.querySelector(".container").classList.add("hidden");
+  document.querySelector(".hide").classList.add("hidden");
+  document.querySelector(".switch").classList.remove("hidden");
+});
+document.querySelector(".switch").addEventListener("click", () => {
+  [currentPlayer, enemyPlayer] = switchTurn(currentPlayer, enemyPlayer);
+  document.querySelector(".container").classList.remove("hidden");
+  document.querySelector(".switch").classList.add("hidden");
+  renderBoards(currentPlayer, enemyPlayer);
+});

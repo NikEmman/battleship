@@ -4,11 +4,15 @@
 }
 body {
   display: flex;
+  width: 100%;
+  min-width: 100%;
 }
 .container {
-  flex: 5;
+  /* flex: 5; */
   display: flex;
   gap: 2em;
+  width: 83.3%;
+  min-width: 83.3%;
 }
 .board {
   display: grid;

@@ -15,7 +15,7 @@ document.getElementById("start").addEventListener("click", () => {
 
 document.querySelector("form").onsubmit = (e) => {
   e.preventDefault();
-  const p1Name = document.getElementById("p1Name").value;
+  const p1Name = document.getElementById("p1Name").value || "Player 1";
   const p2Name = document.getElementById("p2Name").value;
   currentPlayer = new Player(p1Name);
   enemyPlayer = new Player(p2Name);
@@ -38,14 +38,12 @@ async function handleBoardClick(e) {
 
     if (isAttackAlreadyMade(row, column)) return;
 
-    if (isValidCoordinate(row, column)) {
-      enemyPlayer.board.receiveAttack(row, column);
-      await showAttackEffect(e, this);
-      renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
-      renderSunkenShips(enemyPlayer);
-      document.querySelector(".hide").classList.remove("hidden");
-      document.querySelector("#title").classList.remove("hidden");
-    }
+    enemyPlayer.board.receiveAttack(row, column);
+    await showAttackEffect(e, this);
+    document.querySelector(".hide").classList.remove("hidden");
+    document.querySelector("#title").classList.remove("hidden");
+    renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
+    renderSunkenShips(enemyPlayer);
   }
 }
 
@@ -69,10 +67,6 @@ function isAttackAlreadyMade(row, column) {
 
 function attackExists(attacks, row, column) {
   return attacks.some((attack) => attack[0] === row && attack[1] === column);
-}
-
-function isValidCoordinate(row, column) {
-  return !isNaN(row) && !isNaN(column);
 }
 
 async function showAttackEffect(e, container) {
@@ -118,9 +112,10 @@ document.querySelector(".switch").addEventListener("click", () => {
   [currentPlayer, enemyPlayer] = switchTurn(currentPlayer, enemyPlayer);
   document.querySelector(".container").classList.remove("hidden");
   document.querySelector(".switch").classList.add("hidden");
+  document.querySelector(".sunkenShips").classList.remove("hidden");
+
   document.getElementById("title").classList.remove("hidden");
 
-  renderSunkenShips(enemyPlayer);
   renderBoards(currentPlayer, enemyPlayer);
+  renderSunkenShips(enemyPlayer);
 });
-//to do : fix renderSunkenShips

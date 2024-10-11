@@ -9,15 +9,9 @@
     <script type="module" src="events.js" defer></script>
   </head>
   <body>
-    <main>
+    <header>
       <button id="start">NEW GAME</button>
-      <div class="container"></div>
-      <div id="bombshell"></div>
-    </main>
-    <aside>
-      <button class="hide hidden">Hide my board</button>
-      <button class="switch hidden">Switch screen</button>
-      <p id="playing"></p>
+
       <form class="hidden" action="" method="post">
         <label for="p1Name">Player 1 name:</label>
         <input type="text" id="p1Name" name="p1Name" />
@@ -30,8 +24,19 @@
         />
         <button id="newGame" type="submit">Begin</button>
       </form>
-      <p id="title" class="hidden">Sunken enemy ships:</p>
-      <div class="sunkenShips"></div>
-    </aside>
+      <button class="hide hidden">Hide my board</button>
+      <button class="switch hidden">Switch screen</button>
+    </header>
+    <div class="mainContainer">
+      <main>
+        <div class="container"></div>
+        <div id="bombshell"></div>
+      </main>
+      <aside>
+        <p id="playing"></p>
+        <p id="title" class="hidden">Sunken enemy ships:</p>
+        <div class="sunkenShips"></div>
+      </aside>
+    </div>
   </body>
 </html>

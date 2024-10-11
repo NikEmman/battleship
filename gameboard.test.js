@@ -81,3 +81,16 @@ it("When not all ships are sunk it should be able to report false", () => {
   gameboard.ships[4].hits = 3;
   expect(gameboard.isAllShipsSunk()).toBeFalsy();
 });
+it("On hit, if ship is sunk it is tracked", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  gameboard.receiveAttack(0, 1);
+  gameboard.receiveAttack(0, 2);
+  gameboard.receiveAttack(0, 3);
+  expect(gameboard.sunkenShips).toContain(gameboard.ships[0]);
+});
+it("On hit, if ship is not sunk, it is not added to sunken ships", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  gameboard.receiveAttack(0, 1);
+  gameboard.receiveAttack(0, 2);
+  expect(gameboard.sunkenShips).not.toContain(gameboard.ships[0]);
+});

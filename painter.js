@@ -120,5 +120,6 @@ function renderSunkenShips(player) {
     sunkenShips.appendChild(shipElement);
   }
 }
+function endGame() {}
 
 export { renderBoards, showBomb, renderSunkenShips };

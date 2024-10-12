@@ -12,6 +12,13 @@ body {
   min-height: 100vh;
   position: relative;
 }
+.errorMsg {
+  color: red;
+  background-color: pink;
+  border-radius: 5px;
+  position: absolute;
+  left: 0px;
+}
 input {
   width: 16em;
   border-radius: 5px;
@@ -19,11 +26,27 @@ input {
   margin: 5px;
   border: none;
 }
+.error {
+  border: 2px solid red;
+  background-color: pink;
+}
+*:disabled {
+  background-color: dimgrey;
+  color: linen;
+  opacity: 1;
+}
+
 header {
   display: flex;
   justify-content: space-between;
   padding: 2em;
   height: 4em;
+}
+form {
+  backdrop-filter: blur(1px);
+  background-color: color-mix(in srgb, white, transparent 40%);
+  border-radius: 5px;
+  padding: 0.3em;
 }
 .mainContainer {
   display: flex;

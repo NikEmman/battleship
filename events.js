@@ -20,6 +20,21 @@ document.getElementById("start").addEventListener("click", () => {
   document.querySelector(".sunkenShips").innerHTML = "";
 });
 
+// Form input validation
+document.querySelector("#p1Name").addEventListener("input", () => {
+  const p1Name = document.querySelector("#p1Name");
+  const submit = document.getElementById("newGame");
+  if (p1Name.value.toUpperCase() === "COMPUTER") {
+    submit.disabled = true;
+    p1Name.classList.add("error");
+    document.querySelector(".errorMsg").classList.remove("hidden");
+  } else {
+    submit.disabled = false;
+    p1Name.classList.remove("error");
+    document.querySelector(".errorMsg").classList.add("hidden");
+  }
+});
+
 document.querySelector("form").onsubmit = (e) => {
   e.preventDefault();
   const p1Name = document.getElementById("p1Name").value || "Player 1";

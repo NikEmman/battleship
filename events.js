@@ -38,7 +38,7 @@ document.querySelector("#p1Name").addEventListener("input", () => {
 document.querySelector("form").onsubmit = (e) => {
   e.preventDefault();
   const p1Name = document.getElementById("p1Name").value || "Player 1";
-  const p2Name = document.getElementById("p2Name").value;
+  const p2Name = document.getElementById("p2Name").value || "Computer";
   currentPlayer = new Player(p1Name);
   enemyPlayer = new Player(p2Name);
   populateBoards(currentPlayer, enemyPlayer);
@@ -58,19 +58,33 @@ async function handleBoardClick(e) {
   if (isEnemyCell(e.target)) {
     const { row, column } = getCellCoordinates(e.target);
 
-    if (isAttackAlreadyMade(row, column)) return;
+    if (isAttackAlreadyMade(enemyPlayer, row, column)) return;
 
     enemyPlayer.board.receiveAttack(row, column);
     await showAttackEffect(e, this);
-    if (currentPlayer.board.isAllShipsSunk()) {
-    }
 
-    document.querySelector(".hide").classList.remove("hidden");
-    document.querySelector("#title").classList.remove("hidden");
     renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
     renderSunkenShips(enemyPlayer);
     if (enemyPlayer.board.isAllShipsSunk()) {
       endGame(currentPlayer.name);
+    }
+    console.log(enemyPlayer.name);
+    // make AI play
+    if (enemyPlayer.name === "Computer") {
+      let x, y;
+      do {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      } while (isAttackAlreadyMade(currentPlayer, x, y));
+      currentPlayer.board.receiveAttack(x, y);
+
+      renderBoards(currentPlayer, enemyPlayer);
+      if (currentPlayer.board.isAllShipsSunk()) {
+        endGame(enemyPlayer.name);
+      }
+    } else {
+      document.querySelector(".hide").classList.remove("hidden");
+      document.querySelector("#title").classList.remove("hidden");
     }
   }
 }
@@ -86,10 +100,10 @@ function getCellCoordinates(target) {
   };
 }
 
-function isAttackAlreadyMade(row, column) {
+function isAttackAlreadyMade(player, row, column) {
   return (
-    attackExists(enemyPlayer.board.successfulAttacks, row, column) ||
-    attackExists(enemyPlayer.board.missedAttacks, row, column)
+    attackExists(player.board.successfulAttacks, row, column) ||
+    attackExists(player.board.missedAttacks, row, column)
   );
 }
 

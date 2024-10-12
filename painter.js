@@ -120,6 +120,14 @@ function renderSunkenShips(player) {
     sunkenShips.appendChild(shipElement);
   }
 }
-function endGame() {}
+function endGame(winner) {
+  const mainContainer = document.querySelector(".mainContainer");
+  const headerElement = document.querySelector("header");
+  mainContainer.classList.add("gameEnd");
+  headerElement.classList.add("gameEnd");
+  const gameRestart = document.querySelector(".gameRestart");
+  gameRestart.classList.remove("hidden");
+  document.getElementById("winner").textContent = winner;
+}
 
-export { renderBoards, showBomb, renderSunkenShips };
+export { renderBoards, showBomb, renderSunkenShips, endGame };

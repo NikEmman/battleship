@@ -10,6 +10,7 @@ body {
   background-color: rgba(0, 0, 0, 0.8);
   background-blend-mode: lighten;
   min-height: 100vh;
+  position: relative;
 }
 header {
   display: flex;
@@ -81,6 +82,7 @@ button:hover {
 }
 .hidden {
   display: none;
+  visibility: hidden;
 }
 #bombshell {
   width: 20px;
@@ -121,4 +123,19 @@ button:hover {
 .animate-bombshell {
   animation: bombshell-animation 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     forwards;
+}
+.gameEnd {
+  filter: blur(10px);
+  pointer-events: none;
+}
+.gameRestart {
+  color: #4caf50;
+  font-weight: 900;
+  font-size: 5em;
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

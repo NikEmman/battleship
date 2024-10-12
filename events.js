@@ -1,5 +1,10 @@
 import { Player } from "./player.js";
-import { renderBoards, showBomb, renderSunkenShips } from "./painter.js";
+import {
+  renderBoards,
+  showBomb,
+  renderSunkenShips,
+  endGame,
+} from "./painter.js";
 
 let currentPlayer, enemyPlayer;
 
@@ -11,6 +16,8 @@ document.getElementById("start").addEventListener("click", () => {
   document.querySelector("form").classList.remove("hidden");
   document.querySelector("#title").classList.add("hidden");
   document.querySelector(".hide").classList.add("hidden");
+  document.querySelector(".container").innerHTML = "";
+  document.querySelector(".sunkenShips").innerHTML = "";
 });
 
 document.querySelector("form").onsubmit = (e) => {
@@ -40,10 +47,16 @@ async function handleBoardClick(e) {
 
     enemyPlayer.board.receiveAttack(row, column);
     await showAttackEffect(e, this);
+    if (currentPlayer.board.isAllShipsSunk()) {
+    }
+
     document.querySelector(".hide").classList.remove("hidden");
     document.querySelector("#title").classList.remove("hidden");
     renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
     renderSunkenShips(enemyPlayer);
+    if (enemyPlayer.board.isAllShipsSunk()) {
+      endGame(currentPlayer.name);
+    }
   }
 }
 
@@ -118,4 +131,11 @@ document.querySelector(".switch").addEventListener("click", () => {
 
   renderBoards(currentPlayer, enemyPlayer);
   renderSunkenShips(enemyPlayer);
+});
+// game restart button
+document.querySelector(".restart").addEventListener("click", () => {
+  document.querySelector(".mainContainer").classList.remove("gameEnd");
+  document.querySelector("header").classList.remove("gameEnd");
+  document.querySelector(".gameRestart").classList.add("hidden");
+  document.getElementById("start").click();
 });

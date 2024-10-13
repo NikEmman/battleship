@@ -40,6 +40,9 @@ document.querySelector("form").onsubmit = (e) => {
   const p2Name = document.getElementById("p2Name").value || "Computer";
   currentPlayer = new Player(p1Name);
   enemyPlayer = new Player(p2Name);
+  document.getElementById(
+    "title"
+  ).textContent = `${currentPlayer.name} is now playing`;
   populateBoards(currentPlayer, enemyPlayer);
   resetForm();
   renderBoards(currentPlayer, enemyPlayer);
@@ -148,6 +151,9 @@ document
 document.querySelector(".switchBtn").addEventListener("click", () => {
   [currentPlayer, enemyPlayer] = switchTurn(currentPlayer, enemyPlayer);
   switchBoards();
+  document.getElementById(
+    "title"
+  ).textContent = `${currentPlayer.name} is now playing`;
   renderBoards(currentPlayer, enemyPlayer);
   renderSunkenShips(enemyPlayer);
 });

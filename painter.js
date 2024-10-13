@@ -143,6 +143,7 @@ function startGame() {
   document.querySelector("form").classList.remove("hidden");
   document.querySelector("#title").classList.add("hidden");
   document.querySelector(".hideBtn").classList.add("hidden");
+  document.querySelector(".sunkenShips").classList.add("hidden");
   document.querySelector(".container").innerHTML = "";
   document.querySelector(".sunkenShips").innerHTML = "";
 }

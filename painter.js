@@ -139,4 +139,48 @@ function endGame(winner) {
   document.getElementById("winner").textContent = winner;
 }
 
-export { renderBoards, showBomb, renderSunkenShips, endGame };
+function startGame() {
+  document.querySelector("form").classList.remove("hidden");
+  document.querySelector("#title").classList.add("hidden");
+  document.querySelector(".hideBtn").classList.add("hidden");
+  document.querySelector(".container").innerHTML = "";
+  document.querySelector(".sunkenShips").innerHTML = "";
+}
+function resetForm() {
+  document.getElementById("p1Name").value = "";
+  document.getElementById("p2Name").value = "";
+  document.querySelector("form").classList.add("hidden");
+  document.querySelector(".sunkenShips").innerHTML = "";
+}
+function hideCurrentPlayerBoard() {
+  document.querySelector(".container").classList.add("hidden");
+  document.querySelector(".hideBtn").classList.add("hidden");
+  document.querySelector(".switchBtn").classList.remove("hidden");
+  document.querySelector(".sunkenShips").classList.add("hidden");
+  document.getElementById("title").classList.add("hidden");
+}
+function switchBoards() {
+  document.querySelector(".container").classList.remove("hidden");
+  document.querySelector(".switchBtn").classList.add("hidden");
+  document.querySelector(".sunkenShips").classList.remove("hidden");
+
+  document.getElementById("title").classList.remove("hidden");
+}
+function hideGameEndScreen() {
+  document.querySelector(".mainContainer").classList.remove("gameEnd");
+  document.querySelector("header").classList.remove("gameEnd");
+  document.querySelector(".gameRestart").classList.add("hidden");
+  document.querySelector(".sunkenShips").classList.add("hidden");
+}
+
+export {
+  renderBoards,
+  showBomb,
+  renderSunkenShips,
+  endGame,
+  startGame,
+  resetForm,
+  hideCurrentPlayerBoard,
+  switchBoards,
+  hideGameEndScreen,
+};

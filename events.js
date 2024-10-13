@@ -4,6 +4,11 @@ import {
   showBomb,
   renderSunkenShips,
   endGame,
+  startGame,
+  resetForm,
+  hideCurrentPlayerBoard,
+  switchBoards,
+  hideGameEndScreen,
 } from "./painter.js";
 
 let currentPlayer, enemyPlayer;
@@ -12,13 +17,7 @@ function switchTurn(currentPlayer, enemyPlayer) {
   return [enemyPlayer, currentPlayer];
 }
 
-document.getElementById("start").addEventListener("click", () => {
-  document.querySelector("form").classList.remove("hidden");
-  document.querySelector("#title").classList.add("hidden");
-  document.querySelector(".hide").classList.add("hidden");
-  document.querySelector(".container").innerHTML = "";
-  document.querySelector(".sunkenShips").innerHTML = "";
-});
+document.getElementById("start").addEventListener("click", startGame);
 
 // Form input validation
 document.querySelector("#p1Name").addEventListener("input", () => {
@@ -42,11 +41,8 @@ document.querySelector("form").onsubmit = (e) => {
   currentPlayer = new Player(p1Name);
   enemyPlayer = new Player(p2Name);
   populateBoards(currentPlayer, enemyPlayer);
-  document.getElementById("p1Name").value = "";
-  document.getElementById("p2Name").value = "";
-  document.querySelector("form").classList.add("hidden");
-  document.querySelector(".sunkenShips").innerHTML = "";
-  renderBoards(currentPlayer, enemyPlayer); // Render boards initially
+  resetForm();
+  renderBoards(currentPlayer, enemyPlayer);
 };
 
 // Add the event listener once
@@ -63,7 +59,7 @@ async function handleBoardClick(e) {
     enemyPlayer.board.receiveAttack(row, column);
     await showAttackEffect(e, this);
 
-    renderBoards(currentPlayer, enemyPlayer); // Re-render boards after an attack
+    renderBoards(currentPlayer, enemyPlayer);
     renderSunkenShips(enemyPlayer);
     if (enemyPlayer.board.isAllShipsSunk()) {
       endGame(currentPlayer.name);
@@ -85,7 +81,7 @@ async function handleBoardClick(e) {
         endGame(enemyPlayer.name);
       }
     } else {
-      document.querySelector(".hide").classList.remove("hidden");
+      document.querySelector(".hideBtn").classList.remove("hidden");
     }
     document.querySelector("#title").classList.remove("hidden");
   }
@@ -145,29 +141,19 @@ function populateBoards(p1, p2) {
     );
   }
 }
-document.querySelector(".hide").addEventListener("click", () => {
-  document.querySelector(".container").classList.add("hidden");
-  document.querySelector(".hide").classList.add("hidden");
-  document.querySelector(".switch").classList.remove("hidden");
-  document.querySelector(".sunkenShips").classList.add("hidden");
-  document.getElementById("title").classList.add("hidden");
-});
-document.querySelector(".switch").addEventListener("click", () => {
+document
+  .querySelector(".hideBtn")
+  .addEventListener("click", hideCurrentPlayerBoard);
+
+document.querySelector(".switchBtn").addEventListener("click", () => {
   [currentPlayer, enemyPlayer] = switchTurn(currentPlayer, enemyPlayer);
-  document.querySelector(".container").classList.remove("hidden");
-  document.querySelector(".switch").classList.add("hidden");
-  document.querySelector(".sunkenShips").classList.remove("hidden");
-
-  document.getElementById("title").classList.remove("hidden");
-
+  switchBoards();
   renderBoards(currentPlayer, enemyPlayer);
   renderSunkenShips(enemyPlayer);
 });
+
 // game restart button
 document.querySelector(".restart").addEventListener("click", () => {
-  document.querySelector(".mainContainer").classList.remove("gameEnd");
-  document.querySelector("header").classList.remove("gameEnd");
-  document.querySelector(".gameRestart").classList.add("hidden");
-  document.querySelector(".sunkenShips").classList.add("hidden");
+  hideGameEndScreen();
   document.getElementById("start").click();
 });

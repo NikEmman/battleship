@@ -42,7 +42,8 @@ header {
   padding: 2em;
   height: 4em;
 }
-form {
+form,
+.sunkenShips {
   backdrop-filter: blur(1px);
   background-color: color-mix(in srgb, white, transparent 40%);
   border-radius: 5px;
@@ -53,33 +54,86 @@ form {
   padding: 4em;
 }
 .container {
-  display: flex;
+  /* display: flex;
   gap: 2em;
   width: 83.3%;
-  min-width: 83.3%;
+  min-width: 83.3%; */
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
 }
 .board {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  border: 2px solid black;
-  width: 23em;
-  height: 23em;
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
+  gap: 5px;
+  margin: 20px;
 }
 .cell {
-  width: 2em;
-  height: 2em;
-  border: 2px solid red;
+  width: 30px;
+  height: 30px;
+  background-color: #87cefa;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(215, 217, 224, 0.8);
+  border: 1px solid #000;
+  border-radius: 3px;
 }
+.cell[title="Cruiser"] {
+  background-color: #ff6347;
+}
+
+.cell[title="Destroyer"] {
+  background-color: #ffa500;
+}
+
+.cell[title="Battleship"] {
+  background-color: #8b0000;
+}
+
+.cell[title="Carrier"] {
+  background-color: #2e8b57;
+}
+
+.cell:empty {
+  background-color: #d5e1e9;
+}
+
 .enemyBoard .cell {
   cursor: pointer;
+}
+.enemyBoard .cell:empty {
+  background-color: #d5e1e9;
+}
+
+.enemyBoard .cell:empty:hover {
+  background-color: #00bfff;
+}
+
+.enemyBoard .cell:empty:active {
+  background-color: #1e90ff;
 }
 aside {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+#title {
+  font-size: large;
+  color: #4caf50;
+}
+.sunkenShips {
+  min-width: 100%;
+  min-height: 10em;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ship {
+  display: flex;
+  gap: 5px;
+  justify-content: start;
   align-items: center;
 }
 button {

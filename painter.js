@@ -104,6 +104,7 @@ function showBomb(x, y) {
 }
 function renderSunkenShips(player) {
   const sunkenShips = document.querySelector(".sunkenShips");
+  sunkenShips.classList.remove("hidden");
   sunkenShips.innerHTML = "";
 
   for (let ship of player.board.sunkenShips) {
@@ -116,7 +117,15 @@ function renderSunkenShips(player) {
       Carrier: "🛥️",
       Submarine: "🛶",
     };
-    shipElement.textContent = `${shipSymbols[ship.type]} - ${ship.type}`;
+
+    const cell = document.createElement("span");
+    cell.classList.add("cell");
+    cell.title = `${ship.type}`;
+    cell.textContent = `${shipSymbols[ship.type]}`;
+    shipElement.appendChild(cell);
+    const name = document.createElement("p");
+    name.textContent = ` - ${ship.type}`;
+    shipElement.appendChild(name);
     sunkenShips.appendChild(shipElement);
   }
 }

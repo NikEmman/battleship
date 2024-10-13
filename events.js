@@ -79,13 +79,15 @@ async function handleBoardClick(e) {
       currentPlayer.board.receiveAttack(x, y);
 
       renderBoards(currentPlayer, enemyPlayer);
+      renderSunkenShips(enemyPlayer);
+
       if (currentPlayer.board.isAllShipsSunk()) {
         endGame(enemyPlayer.name);
       }
     } else {
       document.querySelector(".hide").classList.remove("hidden");
-      document.querySelector("#title").classList.remove("hidden");
     }
+    document.querySelector("#title").classList.remove("hidden");
   }
 }
 
@@ -166,5 +168,6 @@ document.querySelector(".restart").addEventListener("click", () => {
   document.querySelector(".mainContainer").classList.remove("gameEnd");
   document.querySelector("header").classList.remove("gameEnd");
   document.querySelector(".gameRestart").classList.add("hidden");
+  document.querySelector(".sunkenShips").classList.add("hidden");
   document.getElementById("start").click();
 });

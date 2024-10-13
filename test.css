@@ -59,9 +59,9 @@ button:hover {
   background-color: #4682b4;
 }
 
-.cell[data-row][data-column] {
+/* .cell[data-row][data-column] {
   cursor: pointer;
-}
+} */
 
 .cell[data-row][data-column]:hover {
   background-color: #1e90ff;
@@ -103,11 +103,11 @@ button:hover {
   content: "";
 }
 
-.cell[title]::after {
+/* .cell[title]::after {
   content: attr(title);
   font-size: 12px;
   color: white;
-}
+} */
 
 #bombshell {
   margin-top: 20px;

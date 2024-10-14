@@ -1,4 +1,4 @@
-function renderBoards(self, enemy) {
+function renderBoards(self, enemy = false) {
   const container = document.querySelector(".container");
   container.innerHTML = ""; // Clear the container
 
@@ -71,13 +71,15 @@ function renderBoards(self, enemy) {
     self.board.successfulAttacks,
     false
   );
-  createCells(
-    enemy.board.board,
-    enemyBoard,
-    enemy.board.missedAttacks,
-    enemy.board.successfulAttacks,
-    true
-  );
+  if (enemy) {
+    createCells(
+      enemy.board.board,
+      enemyBoard,
+      enemy.board.missedAttacks,
+      enemy.board.successfulAttacks,
+      true
+    );
+  }
 
   // Append boards to the container
   container.appendChild(myBoard);
@@ -129,6 +131,71 @@ function renderSunkenShips(player) {
     sunkenShips.appendChild(shipElement);
   }
 }
+function renderAvailableShips(player) {
+  const placeShips = document.querySelector(".placeShips");
+  placeShips.classList.remove("hidden");
+  placeShips.innerHTML = "";
+  const playing = document.getElementById("playing");
+  playing.classList.remove("hidden");
+  playing.innerHTML = "";
+  playing.textContent = `${player.name} is now placing ships!`;
+  createDirectionFieldset(placeShips);
+  for (let ship of player.board.ships) {
+    placeShips.appendChild(createShipLabel(ship));
+  }
+}
+function createPlaceShipBtn(placeShips, player) {
+  const btn = document.createElement("button");
+  btn.textContent = "Place Ship";
+  btn.addEventListener("click", () => {
+    const directionRadio = document.getElementsByName("direction");
+    const shipsRadio = document.getElementsByName("ships");
+    let direction;
+    let shipName;
+    for (i = 0; i < directionRadio.length; i++) {
+      if (directionRadio[i].checked) {
+        direction = directionRadio[i].id;
+      }
+    }
+    for (i = 0; i < shipsRadio.length; i++) {
+      if (shipsRadio[i].checked) {
+        shipName = shipsRadio[i].value;
+      }
+    }
+    player.board.placeShips;
+  });
+  placeShips.appendChild(btn);
+}
+function createShipLabel(ship) {
+  const label = document.createElement("label");
+  label.className = "ship";
+  label.id = `${ship.type}`;
+  const shipSymbols = {
+    Cruiser: "🚢",
+    Battleship: "🛳️",
+    Destroyer: "🚤",
+    Carrier: "🛥️",
+    Submarine: "🛶",
+  };
+
+  const input = document.createElement("input");
+  input.type = "radio";
+  input.name = "ships";
+  input.value = `${ship.type}`;
+  label.appendChild(input);
+
+  for (let i = 0; i < ship.size; i++) {
+    const span = document.createElement("span");
+    span.className = "cell";
+    span.title = `${ship.type}`;
+    span.textContent = `${shipSymbols[ship.type]}`;
+    label.appendChild(span);
+  }
+
+  label.appendChild(document.createTextNode(` - ${ship.type}`));
+  return label;
+}
+
 function endGame(winner) {
   const mainContainer = document.querySelector(".mainContainer");
   const headerElement = document.querySelector("header");
@@ -142,6 +209,7 @@ function endGame(winner) {
 function startGame() {
   document.querySelector("form").classList.remove("hidden");
   document.querySelector("#title").classList.add("hidden");
+  document.querySelector("#playing").classList.add("hidden");
   document.querySelector(".hideBtn").classList.add("hidden");
   document.querySelector(".sunkenShips").classList.add("hidden");
   document.querySelector(".container").innerHTML = "";
@@ -159,19 +227,53 @@ function hideCurrentPlayerBoard() {
   document.querySelector(".switchBtn").classList.remove("hidden");
   document.querySelector(".sunkenShips").classList.add("hidden");
   document.getElementById("title").classList.add("hidden");
+  document.getElementById("playing").classList.add("hidden");
 }
 function switchBoards() {
   document.querySelector(".container").classList.remove("hidden");
   document.querySelector(".switchBtn").classList.add("hidden");
   document.querySelector(".sunkenShips").classList.remove("hidden");
-
   document.getElementById("title").classList.remove("hidden");
+  document.getElementById("playing").classList.remove("hidden");
 }
 function hideGameEndScreen() {
   document.querySelector(".mainContainer").classList.remove("gameEnd");
   document.querySelector("header").classList.remove("gameEnd");
   document.querySelector(".gameRestart").classList.add("hidden");
   document.querySelector(".sunkenShips").classList.add("hidden");
+}
+function renderShipPlacement(player) {
+  renderBoards(player);
+  renderAvailableShips(player);
+}
+function createDirectionFieldset(placeShips) {
+  const fieldset = document.createElement("fieldset");
+  fieldset.id = "direction";
+
+  const legend = document.createElement("legend");
+  legend.textContent = "Choose direction:";
+  fieldset.appendChild(legend);
+
+  const verticalLabel = document.createElement("label");
+  verticalLabel.setAttribute("for", "vertical");
+  const verticalInput = document.createElement("input");
+  verticalInput.type = "radio";
+  verticalInput.name = "direction";
+  verticalInput.id = "vertical";
+  verticalLabel.appendChild(verticalInput);
+  verticalLabel.appendChild(document.createTextNode("Vertical"));
+  fieldset.appendChild(verticalLabel);
+
+  const horizontalLabel = document.createElement("label");
+  horizontalLabel.setAttribute("for", "horizontal");
+  const horizontalInput = document.createElement("input");
+  horizontalInput.type = "radio";
+  horizontalInput.name = "direction";
+  horizontalInput.id = "horizontal";
+  horizontalLabel.appendChild(horizontalInput);
+  horizontalLabel.appendChild(document.createTextNode("Horizontal"));
+  fieldset.appendChild(horizontalLabel);
+  placeShips.appendChild(fieldset);
 }
 
 export {
@@ -184,4 +286,5 @@ export {
   hideCurrentPlayerBoard,
   switchBoards,
   hideGameEndScreen,
+  renderShipPlacement,
 };

@@ -9,6 +9,7 @@ import {
   hideCurrentPlayerBoard,
   switchBoards,
   hideGameEndScreen,
+  renderShipPlacement,
 } from "./painter.js";
 
 let currentPlayer, enemyPlayer;
@@ -40,13 +41,28 @@ document.querySelector("form").onsubmit = (e) => {
   const p2Name = document.getElementById("p2Name").value || "Computer";
   currentPlayer = new Player(p1Name);
   enemyPlayer = new Player(p2Name);
-  document.getElementById(
-    "title"
-  ).textContent = `${currentPlayer.name} is now playing`;
-  populateBoards(currentPlayer, enemyPlayer);
   resetForm();
-  renderBoards(currentPlayer, enemyPlayer);
+  renderShipPlacement(currentPlayer);
+  document.querySelector(".begin").classList.add("hidden");
+  document.querySelector(".p2Ships").classList.remove("hidden");
 };
+
+document.querySelector(".p2Ships").addEventListener("click", () => {
+  renderShipPlacement(enemyPlayer);
+  document.querySelector(".begin").classList.remove("hidden");
+  document.querySelector(".p2Ships").classList.add("hidden");
+});
+
+document.querySelector(".begin").addEventListener("click", () => {
+  document.querySelector(".begin").classList.add("hidden");
+  document.getElementById(
+    "playing"
+  ).textContent = `${currentPlayer.name} is now playing`;
+  document.querySelector("#playing").classList.remove("hidden");
+  populateBoards(currentPlayer, enemyPlayer);
+
+  renderBoards(currentPlayer, enemyPlayer);
+});
 
 // Add the event listener once
 document
@@ -87,6 +103,7 @@ async function handleBoardClick(e) {
       document.querySelector(".hideBtn").classList.remove("hidden");
     }
     document.querySelector("#title").classList.remove("hidden");
+    document.querySelector("#playing").classList.remove("hidden");
   }
 }
 
@@ -152,7 +169,7 @@ document.querySelector(".switchBtn").addEventListener("click", () => {
   [currentPlayer, enemyPlayer] = switchTurn(currentPlayer, enemyPlayer);
   switchBoards();
   document.getElementById(
-    "title"
+    "playing"
   ).textContent = `${currentPlayer.name} is now playing`;
   renderBoards(currentPlayer, enemyPlayer);
   renderSunkenShips(enemyPlayer);

@@ -10,6 +10,7 @@
   <body>
     <header class="">
       <button id="start">NEW GAME</button>
+      <p id="playing"></p>
 
       <form class="hidden" action="" method="post">
         <label for="p1Name">Player 1 name:</label>
@@ -22,8 +23,10 @@
           name="p2Name"
           placeholder="Leave empty for computer player"
         />
-        <button id="newGame" type="submit">Begin</button>
+        <button id="newGame" type="submit">Continue</button>
       </form>
+      <button class="p2Ships hidden">Player 2 ship placement</button>
+      <button class="begin hidden">Begin!</button>
       <button class="hideBtn hidden">Hide my board</button>
       <button class="switchBtn hidden">Switch screen</button>
     </header>
@@ -33,9 +36,43 @@
         <div id="bombshell"></div>
       </main>
       <aside>
-        <p id="playing"></p>
         <p id="title" class="hidden">Sunken enemy ships:</p>
         <div class="sunkenShips hidden"></div>
+
+        <div class="placeShips">
+          <fieldset id="direction">
+            <legend>Choose direction:</legend>
+            <label for="vertical"
+              ><input
+                type="radio"
+                name="direction"
+                id="vertical"
+              />Vertical</label
+            >
+            <label for="horizontal"
+              ><input
+                type="radio"
+                name="direction"
+                id="horizontal"
+              />horizontal</label
+            >
+          </fieldset>
+          <label class="ship">
+            <input type="radio" name="ships" value="Cruiser" />
+            <span class="cell" title="Cruiser">🚢</span>
+            <span class="cell" title="Cruiser">🚢</span>
+            <span class="cell" title="Cruiser">🚢</span>
+            - Cruiser
+          </label>
+
+          <label>
+            <input type="radio" name="ships" value="Sub" />
+            <span class="cell" title="Cruiser">🚢</span>
+            <span class="cell" title="Cruiser">🚢</span>
+            <span class="cell" title="Cruiser">🚢</span>
+            <p>- Sub</p>
+          </label>
+        </div>
       </aside>
     </div>
     <div class="gameRestart hidden">

@@ -94,3 +94,23 @@ it("On hit, if ship is not sunk, it is not added to sunken ships", () => {
   gameboard.receiveAttack(0, 2);
   expect(gameboard.sunkenShips).not.toContain(gameboard.ships[0]);
 });
+it("Should return true when all ships are placed", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 0, "horizontal"); // Cruiser
+  gameboard.placeShip(gameboard.ships[1], 1, 0, "horizontal"); // Battleship
+  gameboard.placeShip(gameboard.ships[2], 2, 0, "horizontal"); // Destroyer
+  gameboard.placeShip(gameboard.ships[3], 3, 0, "horizontal"); // Carrier
+  gameboard.placeShip(gameboard.ships[4], 4, 0, "horizontal"); // Submarine
+
+  expect(gameboard.isAllShipsPlaced()).toBe(true);
+});
+
+it("Should return false when not all ships are placed", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 0, "horizontal"); // Cruiser
+  gameboard.placeShip(gameboard.ships[1], 1, 0, "horizontal"); // Battleship
+
+  expect(gameboard.isAllShipsPlaced()).toBe(false);
+});
+
+it("Should return false when no ships are placed", () => {
+  expect(gameboard.isAllShipsPlaced()).toBe(false);
+});

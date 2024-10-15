@@ -13,6 +13,7 @@ import {
 } from "./painter.js";
 
 let currentPlayer, enemyPlayer;
+let firstPlayerPlacement = true;
 
 function switchTurn(currentPlayer, enemyPlayer) {
   return [enemyPlayer, currentPlayer];
@@ -44,10 +45,52 @@ document.querySelector("form").onsubmit = (e) => {
   resetForm();
   renderShipPlacement(currentPlayer);
   document.querySelector(".begin").classList.add("hidden");
-  document.querySelector(".p2Ships").classList.remove("hidden");
+  firstPlayerPlacement = true;
 };
+document.querySelector(".container").addEventListener("click", (e) => {
+  if (isFriendlyCell(e.target)) {
+    const player = firstPlayerPlacement ? currentPlayer : enemyPlayer;
+    placeShipOnBoard(e, player);
+    if (player.board.isAllShipsPlaced && firstPlayerPlacement) {
+      if (enemyPlayer.name === "Computer") {
+        document.querySelector(".begin").classList.remove("hidden");
+        populateBoards(enemyPlayer);
+      } else {
+        document.querySelector(".p2Ships").classList.remove("hidden");
+        // document.querySelector(".placeShips").classList.add("hidden");
+        //fix which button appears when upon finishing ship placement
+      }
+    }
+  }
+});
+
+function placeShipOnBoard(e, player) {
+  const directionRadio = document.getElementsByName("direction");
+  const shipsRadio = document.getElementsByName("ships");
+  let direction;
+  let shipName;
+  for (let i = 0; i < directionRadio.length; i++) {
+    if (directionRadio[i].checked) {
+      direction = directionRadio[i].id;
+    }
+  }
+  for (let i = 0; i < shipsRadio.length; i++) {
+    if (shipsRadio[i].checked) {
+      shipName = shipsRadio[i].value;
+    }
+  }
+  const ship = player.board.getShip(shipName);
+  const { row, column } = getCellCoordinates(e.target);
+  if (shipName) {
+    // add red color on cell mouseover is invalid position
+    player.board.placeShip(ship, row, column, direction);
+    document.getElementById(`${shipName}`).remove();
+    renderBoards(player);
+  }
+}
 
 document.querySelector(".p2Ships").addEventListener("click", () => {
+  firstPlayerPlacement = false;
   renderShipPlacement(enemyPlayer);
   document.querySelector(".begin").classList.remove("hidden");
   document.querySelector(".p2Ships").classList.add("hidden");
@@ -59,7 +102,7 @@ document.querySelector(".begin").addEventListener("click", () => {
     "playing"
   ).textContent = `${currentPlayer.name} is now playing`;
   document.querySelector("#playing").classList.remove("hidden");
-  populateBoards(currentPlayer, enemyPlayer);
+  // populateBoards(currentPlayer, enemyPlayer);
 
   renderBoards(currentPlayer, enemyPlayer);
 });
@@ -110,6 +153,9 @@ async function handleBoardClick(e) {
 function isEnemyCell(target) {
   return target.classList.contains("cell") && target.closest(".enemyBoard");
 }
+function isFriendlyCell(target) {
+  return target.classList.contains("cell") && target.closest(".myBoard");
+}
 
 function getCellCoordinates(target) {
   return {
@@ -138,7 +184,7 @@ async function showAttackEffect(e, container) {
 }
 
 // Temporary function for development purposes. Will place ships for each board.
-function populateBoards(p1, p2) {
+function populateBoards(p1, p2 = false) {
   const coords = [
     [0, 1, "horizontal"],
     [3, 0, "vertical"],
@@ -153,12 +199,14 @@ function populateBoards(p1, p2) {
       coords[i][1],
       coords[i][2]
     );
-    p2.board.placeShip(
-      p2.board.ships[i],
-      coords[i][0],
-      coords[i][1],
-      coords[i][2]
-    );
+    if (p2) {
+      p2.board.placeShip(
+        p2.board.ships[i],
+        coords[i][0],
+        coords[i][1],
+        coords[i][2]
+      );
+    }
   }
 }
 document

@@ -77,4 +77,23 @@ export class Gameboard {
     const sunk = (ship) => ship.isSunk();
     return this.ships.every(sunk);
   }
+  getShip(shipType) {
+    for (let ship of this.ships) {
+      if (ship.type === shipType) {
+        return ship;
+      }
+    }
+  }
+  isAllShipsPlaced() {
+    const flattenedBoard = new Set(this.board.flat(1));
+    console.log(flattenedBoard);
+    const shipTypes = [
+      "Cruiser",
+      "Battleship",
+      "Destroyer",
+      "Carrier",
+      "Submarine",
+    ];
+    return shipTypes.every((type) => flattenedBoard.has(type));
+  }
 }

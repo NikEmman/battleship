@@ -144,28 +144,6 @@ function renderAvailableShips(player) {
     placeShips.appendChild(createShipLabel(ship));
   }
 }
-function createPlaceShipBtn(placeShips, player) {
-  const btn = document.createElement("button");
-  btn.textContent = "Place Ship";
-  btn.addEventListener("click", () => {
-    const directionRadio = document.getElementsByName("direction");
-    const shipsRadio = document.getElementsByName("ships");
-    let direction;
-    let shipName;
-    for (i = 0; i < directionRadio.length; i++) {
-      if (directionRadio[i].checked) {
-        direction = directionRadio[i].id;
-      }
-    }
-    for (i = 0; i < shipsRadio.length; i++) {
-      if (shipsRadio[i].checked) {
-        shipName = shipsRadio[i].value;
-      }
-    }
-    player.board.placeShips;
-  });
-  placeShips.appendChild(btn);
-}
 function createShipLabel(ship) {
   const label = document.createElement("label");
   label.className = "ship";
@@ -214,6 +192,8 @@ function startGame() {
   document.querySelector(".sunkenShips").classList.add("hidden");
   document.querySelector(".container").innerHTML = "";
   document.querySelector(".sunkenShips").innerHTML = "";
+  document.querySelector(".placeShips").classList.add("hidden");
+  document.querySelector(".placeShips").innerHTML = "";
 }
 function resetForm() {
   document.getElementById("p1Name").value = "";
@@ -260,6 +240,7 @@ function createDirectionFieldset(placeShips) {
   verticalInput.type = "radio";
   verticalInput.name = "direction";
   verticalInput.id = "vertical";
+  verticalInput.checked = true;
   verticalLabel.appendChild(verticalInput);
   verticalLabel.appendChild(document.createTextNode("Vertical"));
   fieldset.appendChild(verticalLabel);

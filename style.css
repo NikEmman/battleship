@@ -101,18 +101,18 @@ form,
   background-color: #d5e1e9;
 }
 
-.enemyBoard .cell {
+.cell {
   cursor: pointer;
 }
-.enemyBoard .cell:empty {
+.cell:empty {
   background-color: #d5e1e9;
 }
 
-.enemyBoard .cell:empty:hover {
+.cell:empty:hover {
   background-color: #00bfff;
 }
 
-.enemyBoard .cell:empty:active {
+.cell:empty:active {
   background-color: #1e90ff;
 }
 aside {
@@ -234,4 +234,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.gameStarted {
+  pointer-events: none;
 }

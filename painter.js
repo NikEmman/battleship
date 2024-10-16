@@ -190,6 +190,7 @@ function startGame() {
   document.querySelector("#playing").classList.add("hidden");
   document.querySelector(".hideBtn").classList.add("hidden");
   document.querySelector(".sunkenShips").classList.add("hidden");
+  document.querySelector(".begin").classList.add("hidden");
   document.querySelector(".container").innerHTML = "";
   document.querySelector(".sunkenShips").innerHTML = "";
   document.querySelector(".placeShips").classList.add("hidden");

@@ -14,12 +14,17 @@ import {
 
 let currentPlayer, enemyPlayer;
 let firstPlayerPlacement = true;
+let isGameStarted = false;
 
 function switchTurn(currentPlayer, enemyPlayer) {
   return [enemyPlayer, currentPlayer];
 }
 
-document.getElementById("start").addEventListener("click", startGame);
+document.getElementById("start").addEventListener("click", () => {
+  startGame();
+  isGameStarted = false;
+  firstPlayerPlacement = true;
+});
 
 // Form input validation
 document.querySelector("#p1Name").addEventListener("input", () => {
@@ -47,19 +52,39 @@ document.querySelector("form").onsubmit = (e) => {
   document.querySelector(".begin").classList.add("hidden");
   firstPlayerPlacement = true;
 };
+
+// event listener for placing ships
 document.querySelector(".container").addEventListener("click", (e) => {
   if (isFriendlyCell(e.target)) {
+    if (isGameStarted) {
+      return;
+    }
     const player = firstPlayerPlacement ? currentPlayer : enemyPlayer;
     placeShipOnBoard(e, player);
-    if (player.board.isAllShipsPlaced && firstPlayerPlacement) {
+    if (
+      player.board.isAllShipsPlaced() &&
+      firstPlayerPlacement &&
+      !isGameStarted
+    ) {
       if (enemyPlayer.name === "Computer") {
         document.querySelector(".begin").classList.remove("hidden");
         populateBoards(enemyPlayer);
       } else {
         document.querySelector(".p2Ships").classList.remove("hidden");
-        // document.querySelector(".placeShips").classList.add("hidden");
-        //fix which button appears when upon finishing ship placement
       }
+    } else if (
+      player.board.isAllShipsPlaced() &&
+      !firstPlayerPlacement &&
+      !isGameStarted
+    ) {
+      document.querySelector(".p2Ships").classList.add("hidden");
+      document.querySelector(".begin").classList.remove("hidden");
+    }
+    console.log(player.board.isAllShipsPlaced());
+    console.log(player.name);
+    if (player.board.isAllShipsPlaced()) {
+      document.querySelector(".placeShips").classList.add("hidden");
+      document.querySelector(".myBoard").classList.add("gameStarted");
     }
   }
 });
@@ -92,19 +117,20 @@ function placeShipOnBoard(e, player) {
 document.querySelector(".p2Ships").addEventListener("click", () => {
   firstPlayerPlacement = false;
   renderShipPlacement(enemyPlayer);
-  document.querySelector(".begin").classList.remove("hidden");
   document.querySelector(".p2Ships").classList.add("hidden");
 });
 
 document.querySelector(".begin").addEventListener("click", () => {
   document.querySelector(".begin").classList.add("hidden");
+  document.querySelector(".myBoard").classList.add("gameStarted");
+  isGameStarted = true;
   document.getElementById(
     "playing"
   ).textContent = `${currentPlayer.name} is now playing`;
   document.querySelector("#playing").classList.remove("hidden");
-  // populateBoards(currentPlayer, enemyPlayer);
 
   renderBoards(currentPlayer, enemyPlayer);
+  document.querySelector(".myBoard").classList.add("gameStarted");
 });
 
 // Add the event listener once
@@ -123,10 +149,11 @@ async function handleBoardClick(e) {
 
     renderBoards(currentPlayer, enemyPlayer);
     renderSunkenShips(enemyPlayer);
+    document.querySelector(".myBoard").classList.add("gameStarted");
+
     if (enemyPlayer.board.isAllShipsSunk()) {
       endGame(currentPlayer.name);
     }
-    console.log(enemyPlayer.name);
     // make AI play
     if (enemyPlayer.name === "Computer") {
       let x, y;
@@ -138,6 +165,7 @@ async function handleBoardClick(e) {
 
       renderBoards(currentPlayer, enemyPlayer);
       renderSunkenShips(enemyPlayer);
+      document.querySelector(".myBoard").classList.add("gameStarted");
 
       if (currentPlayer.board.isAllShipsSunk()) {
         endGame(enemyPlayer.name);
@@ -147,6 +175,8 @@ async function handleBoardClick(e) {
     }
     document.querySelector("#title").classList.remove("hidden");
     document.querySelector("#playing").classList.remove("hidden");
+    if (enemyPlayer.name !== "Computer")
+      document.querySelector(".enemyBoard").classList.add("gameStarted");
   }
 }
 
@@ -221,6 +251,7 @@ document.querySelector(".switchBtn").addEventListener("click", () => {
   ).textContent = `${currentPlayer.name} is now playing`;
   renderBoards(currentPlayer, enemyPlayer);
   renderSunkenShips(enemyPlayer);
+  document.querySelector(".myBoard").classList.add("gameStarted");
 });
 
 // game restart button

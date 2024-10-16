@@ -33,11 +33,14 @@ document.querySelector("#p1Name").addEventListener("input", () => {
   if (p1Name.value.toUpperCase() === "COMPUTER") {
     submit.disabled = true;
     p1Name.classList.add("error");
-    document.querySelector(".errorMsg").classList.remove("hidden");
+    document.getElementById("error").classList.remove("hidden");
+
+    document.getElementById("error").textContent = "RESERVED NAME";
   } else {
     submit.disabled = false;
     p1Name.classList.remove("error");
-    document.querySelector(".errorMsg").classList.add("hidden");
+    document.getElementById("error").classList.add("hidden");
+    document.getElementById("error").textContent = "";
   }
 });
 
@@ -106,11 +109,27 @@ function placeShipOnBoard(e, player) {
   }
   const ship = player.board.getShip(shipName);
   const { row, column } = getCellCoordinates(e.target);
-  if (shipName) {
-    // add red color on cell mouseover is invalid position
-    player.board.placeShip(ship, row, column, direction);
-    document.getElementById(`${shipName}`).remove();
-    renderBoards(player);
+  // if (shipName) {
+  //
+  //   player.board.placeShip(ship, row, column, direction);
+  //   document.getElementById(`${shipName}`).remove();
+  //   renderBoards(player);
+  // }
+  // add red color on cell mouseover is invalid position
+  try {
+    if (shipName) {
+      player.board.placeShip(ship, row, column, direction);
+      document.getElementById(`${shipName}`).remove();
+      renderBoards(player);
+      document.getElementById("error").classList.add("hidden");
+
+      document.getElementById("error").textContent = ""; // Clear error message on successful placement
+    }
+  } catch (error) {
+    const errorDiv = document.getElementById("error");
+    document.getElementById("error").classList.remove("hidden");
+
+    errorDiv.textContent = error.message; // Display error message
   }
 }
 

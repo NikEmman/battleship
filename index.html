@@ -15,7 +15,7 @@
       <form class="hidden" action="" method="post">
         <label for="p1Name">Player 1 name:</label>
         <input type="text" id="p1Name" name="p1Name" placeholder="Player 1" />
-        <span class="errorMsg hidden">Reserved Name</span>
+        <!-- <span class="errorMsg hidden">Reserved Name</span> -->
         <label for="p2Name">Player 2 name:</label>
         <input
           type="text"
@@ -33,46 +33,13 @@
     <div class="mainContainer">
       <main>
         <div class="container"></div>
-        <div id="bombshell"></div>
+        <div id="error" class="errorMsg hidden"></div>
       </main>
       <aside>
         <p id="title" class="hidden">Sunken enemy ships:</p>
         <div class="sunkenShips hidden"></div>
 
-        <div class="placeShips">
-          <fieldset id="direction">
-            <legend>Choose direction:</legend>
-            <label for="vertical"
-              ><input
-                type="radio"
-                name="direction"
-                id="vertical"
-              />Vertical</label
-            >
-            <label for="horizontal"
-              ><input
-                type="radio"
-                name="direction"
-                id="horizontal"
-              />horizontal</label
-            >
-          </fieldset>
-          <label class="ship">
-            <input type="radio" name="ships" value="Cruiser" />
-            <span class="cell" title="Cruiser">🚢</span>
-            <span class="cell" title="Cruiser">🚢</span>
-            <span class="cell" title="Cruiser">🚢</span>
-            - Cruiser
-          </label>
-
-          <label class="ship">
-            <input type="radio" name="ships" value="Sub" />
-            <span class="cell" title="Cruiser">🚢</span>
-            <span class="cell" title="Cruiser">🚢</span>
-            <span class="cell" title="Cruiser">🚢</span>
-            <p>- Sub</p>
-          </label>
-        </div>
+        <div class="placeShips hidden"></div>
       </aside>
     </div>
     <div class="gameRestart hidden">
@@ -80,5 +47,6 @@
       <p><span id="winner"></span> has won!</p>
       <button class="restart">Play again!</button>
     </div>
+    <div id="bombshell"></div>
   </body>
 </html>

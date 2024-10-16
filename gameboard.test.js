@@ -114,3 +114,32 @@ it("Should return false when not all ships are placed", () => {
 it("Should return false when no ships are placed", () => {
   expect(gameboard.isAllShipsPlaced()).toBe(false);
 });
+it("Should return true if attack was already made (missed attack)", () => {
+  gameboard.receiveAttack(0, 1);
+  expect(gameboard.isAttackAlreadyMade(0, 1)).toBeTruthy();
+});
+
+it("Should return true if attack was already made (successful attack)", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  gameboard.receiveAttack(0, 1);
+  expect(gameboard.isAttackAlreadyMade(0, 1)).toBeTruthy();
+});
+
+it("Should return false if attack was not made", () => {
+  expect(gameboard.isAttackAlreadyMade(0, 1)).toBeFalsy();
+});
+
+it("Should return true for multiple missed attacks", () => {
+  gameboard.receiveAttack(0, 1);
+  gameboard.receiveAttack(2, 3);
+  expect(gameboard.isAttackAlreadyMade(0, 1)).toBeTruthy();
+  expect(gameboard.isAttackAlreadyMade(2, 3)).toBeTruthy();
+});
+
+it("Should return true for multiple successful attacks", () => {
+  gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
+  gameboard.receiveAttack(0, 1);
+  gameboard.receiveAttack(0, 2);
+  expect(gameboard.isAttackAlreadyMade(0, 1)).toBeTruthy();
+  expect(gameboard.isAttackAlreadyMade(0, 2)).toBeTruthy();
+});

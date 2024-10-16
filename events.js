@@ -142,7 +142,7 @@ async function handleBoardClick(e) {
   if (isEnemyCell(e.target)) {
     const { row, column } = getCellCoordinates(e.target);
 
-    if (isAttackAlreadyMade(enemyPlayer, row, column)) return;
+    if (enemyPlayer.board.isAttackAlreadyMade(row, column)) return;
 
     enemyPlayer.board.receiveAttack(row, column);
     await showAttackEffect(e, this);
@@ -160,7 +160,7 @@ async function handleBoardClick(e) {
       do {
         x = Math.floor(Math.random() * 10);
         y = Math.floor(Math.random() * 10);
-      } while (isAttackAlreadyMade(currentPlayer, x, y));
+      } while (currentPlayer.board.isAttackAlreadyMade(x, y));
       currentPlayer.board.receiveAttack(x, y);
 
       renderBoards(currentPlayer, enemyPlayer);
@@ -192,17 +192,6 @@ function getCellCoordinates(target) {
     row: parseInt(target.dataset.row),
     column: parseInt(target.dataset.column),
   };
-}
-
-function isAttackAlreadyMade(player, row, column) {
-  return (
-    attackExists(player.board.successfulAttacks, row, column) ||
-    attackExists(player.board.missedAttacks, row, column)
-  );
-}
-
-function attackExists(attacks, row, column) {
-  return attacks.some((attack) => attack[0] === row && attack[1] === column);
 }
 
 async function showAttackEffect(e, container) {

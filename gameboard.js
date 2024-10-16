@@ -96,4 +96,13 @@ export class Gameboard {
     ];
     return shipTypes.every((type) => flattenedBoard.has(type));
   }
+  isAttackAlreadyMade(row, column) {
+    const pair = [row, column];
+    const attackExists = (array) =>
+      array.some((element) => element[0] === pair[0] && element[1] === pair[1]);
+
+    return (
+      attackExists(this.successfulAttacks) || attackExists(this.missedAttacks)
+    );
+  }
 }

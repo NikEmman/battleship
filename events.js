@@ -144,12 +144,12 @@ async function handleBoardClick(e) {
 
     if (enemyPlayer.board.isAttackAlreadyMade(row, column)) return;
 
+    document.querySelector(".myBoard").classList.add("gameStarted");
     enemyPlayer.board.receiveAttack(row, column);
     await showAttackEffect(e, this);
 
     renderBoards(currentPlayer, enemyPlayer);
     renderSunkenShips(enemyPlayer);
-    document.querySelector(".myBoard").classList.add("gameStarted");
 
     if (enemyPlayer.board.isAllShipsSunk()) {
       endGame(currentPlayer.name);

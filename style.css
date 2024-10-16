@@ -19,7 +19,12 @@ body {
   position: absolute;
   left: 0px;
 }
-input {
+fieldset {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3em;
+}
+input[type="text"] {
   width: 16em;
   border-radius: 5px;
   padding: 10px;
@@ -134,13 +139,18 @@ aside {
   padding: 10px;
   border-radius: 5px;
 }
-.sunkenShips,
-.placeShips {
+.sunkenShips {
   min-width: 100%;
   min-height: 10em;
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+.placeShips {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 .ship {
   display: flex;

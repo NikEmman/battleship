@@ -143,3 +143,8 @@ it("Should return true for multiple successful attacks", () => {
   expect(gameboard.isAttackAlreadyMade(0, 1)).toBeTruthy();
   expect(gameboard.isAttackAlreadyMade(0, 2)).toBeTruthy();
 });
+
+it("Can randomly place ships", () => {
+  gameboard.randomShipPlacement();
+  expect(gameboard.isAllShipsPlaced()).toBeTruthy();
+});

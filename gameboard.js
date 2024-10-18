@@ -105,4 +105,16 @@ export class Gameboard {
       attackExists(this.successfulAttacks) || attackExists(this.missedAttacks)
     );
   }
+  randomShipPlacement() {
+    const coords = [
+      [0, 1, "horizontal"],
+      [3, 0, "vertical"],
+      [0, 7, "vertical"],
+      [5, 2, "vertical"],
+      [7, 7, "horizontal"],
+    ];
+    for (let i = 0; i < 5; i++) {
+      this.placeShip(this.ships[i], coords[i][0], coords[i][1], coords[i][2]);
+    }
+  }
 }

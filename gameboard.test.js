@@ -49,7 +49,7 @@ it("Should throw an error if placement squares are occupied by another ship", ()
   gameboard.placeShip(gameboard.ships[0], 0, 1, "horizontal");
   expect(() =>
     gameboard.placeShip(gameboard.ships[1], 0, 1, "horizontal")
-  ).toThrow("Occupied space!");
+  ).toThrow("Invalid ship placement!");
 });
 it("Should be able to receive an attack, and keep track if it missed", () => {
   gameboard.receiveAttack(0, 1);

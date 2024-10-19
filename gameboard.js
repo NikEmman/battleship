@@ -27,11 +27,8 @@ export class Gameboard {
     });
   }
   placeShip(ship, x, y, position) {
-    if (this.isOutOfBounds(ship, x, y, position)) {
-      throw new Error("Ship out of bounds!");
-    }
-    if (this.isOccupied(ship, x, y, position)) {
-      throw new Error("Occupied space!");
+    if (!this.isValidPlacement(ship, x, y, position)) {
+      throw new Error("Invalid ship placement!");
     }
 
     const isVertical = position === "vertical";
@@ -41,23 +38,25 @@ export class Gameboard {
       this.board[newX][newY] = ship.type;
     }
   }
-  isOccupied(ship, x, y, position) {
+  isValidPlacement(ship, x, y, position) {
     const isVertical = position === "vertical";
     for (let i = 0; i < ship.size; i++) {
       const newX = isVertical ? x + i : x;
       const newY = isVertical ? y : y + i;
+
+      // Check if coordinates are out of bounds
+      if (newX >= 10 || newY >= 10 || newX < 0 || newY < 0) {
+        return false;
+      }
+
+      // Check if the position is occupied
       if (this.board[newX][newY] !== 0) {
-        return true;
+        return false;
       }
     }
-    return false;
+    return true;
   }
-  isOutOfBounds(ship, x, y, position) {
-    return (
-      (position === "vertical" && x + ship.size > 10) ||
-      (position === "horizontal" && y + ship.size > 10)
-    );
-  }
+
   receiveAttack(x, y) {
     if (this.board[x][y] === 0) {
       this.missedAttacks.push([x, y]);
@@ -86,7 +85,6 @@ export class Gameboard {
   }
   isAllShipsPlaced() {
     const flattenedBoard = new Set(this.board.flat(1));
-    console.log(flattenedBoard);
     const shipTypes = [
       "Cruiser",
       "Battleship",
@@ -106,15 +104,21 @@ export class Gameboard {
     );
   }
   randomShipPlacement() {
-    const coords = [
-      [0, 1, "horizontal"],
-      [3, 0, "vertical"],
-      [0, 7, "vertical"],
-      [5, 2, "vertical"],
-      [7, 7, "horizontal"],
-    ];
+    const directions = ["horizontal", "vertical"];
+
     for (let i = 0; i < 5; i++) {
-      this.placeShip(this.ships[i], coords[i][0], coords[i][1], coords[i][2]);
+      let placed = false;
+      while (!placed) {
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
+        const position =
+          directions[Math.floor(Math.random() * directions.length)];
+
+        if (this.isValidPlacement(this.ships[i], x, y, position)) {
+          this.placeShip(this.ships[i], x, y, position);
+          placed = true;
+        }
+      }
     }
   }
 }

@@ -91,11 +91,11 @@ main {
   border-radius: 3px;
 }
 .cell[title="Cruiser"] {
-  background-color: #ff6347;
+  background-color: #d88627;
 }
 
 .cell[title="Destroyer"] {
-  background-color: #ffa500;
+  background-color: #fbff00;
 }
 
 .cell[title="Battleship"] {
@@ -104,6 +104,9 @@ main {
 
 .cell[title="Carrier"] {
   background-color: #2e8b57;
+}
+.cell[title="Submarine"] {
+  background-color: #5e0870;
 }
 
 .cell:empty {

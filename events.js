@@ -71,7 +71,8 @@ document.querySelector(".container").addEventListener("click", (e) => {
     ) {
       if (enemyPlayer.name === "Computer") {
         document.querySelector(".begin").classList.remove("hidden");
-        populateBoards(enemyPlayer);
+        enemyPlayer.board.randomShipPlacement();
+        console.log(enemyPlayer.board.board);
       } else {
         document.querySelector(".p2Ships").classList.remove("hidden");
       }
@@ -83,8 +84,6 @@ document.querySelector(".container").addEventListener("click", (e) => {
       document.querySelector(".p2Ships").classList.add("hidden");
       document.querySelector(".begin").classList.remove("hidden");
     }
-    console.log(player.board.isAllShipsPlaced());
-    console.log(player.name);
     if (player.board.isAllShipsPlaced()) {
       document.querySelector(".placeShips").classList.add("hidden");
       document.querySelector(".myBoard").classList.add("gameStarted");

@@ -72,7 +72,6 @@ document.querySelector(".container").addEventListener("click", (e) => {
       if (enemyPlayer.name === "Computer") {
         document.querySelector(".begin").classList.remove("hidden");
         enemyPlayer.board.randomShipPlacement();
-        console.log(enemyPlayer.board.board);
       } else {
         document.querySelector(".p2Ships").classList.remove("hidden");
       }

@@ -219,32 +219,6 @@ async function showAttackEffect(e, container) {
   await showBomb(x, y);
 }
 
-// Temporary function for development purposes. Will place ships for each board.
-function populateBoards(p1, p2 = false) {
-  const coords = [
-    [0, 1, "horizontal"],
-    [3, 0, "vertical"],
-    [0, 7, "vertical"],
-    [5, 2, "vertical"],
-    [7, 7, "horizontal"],
-  ];
-  for (let i = 0; i < 5; i++) {
-    p1.board.placeShip(
-      p1.board.ships[i],
-      coords[i][0],
-      coords[i][1],
-      coords[i][2]
-    );
-    if (p2) {
-      p2.board.placeShip(
-        p2.board.ships[i],
-        coords[i][0],
-        coords[i][1],
-        coords[i][2]
-      );
-    }
-  }
-}
 document
   .querySelector(".hideBtn")
   .addEventListener("click", hideCurrentPlayerBoard);

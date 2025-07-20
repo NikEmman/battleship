@@ -107,13 +107,7 @@ function placeShipOnBoard(e, player) {
   }
   const ship = player.board.getShip(shipName);
   const { row, column } = getCellCoordinates(e.target);
-  // if (shipName) {
-  //
-  //   player.board.placeShip(ship, row, column, direction);
-  //   document.getElementById(`${shipName}`).remove();
-  //   renderBoards(player);
-  // }
-  // add red color on cell mouseover is invalid position
+
   try {
     if (shipName) {
       player.board.placeShip(ship, row, column, direction);
@@ -121,13 +115,13 @@ function placeShipOnBoard(e, player) {
       renderBoards(player);
       document.getElementById("error").classList.add("hidden");
 
-      document.getElementById("error").textContent = ""; // Clear error message on successful placement
+      document.getElementById("error").textContent = "";
     }
   } catch (error) {
     const errorDiv = document.getElementById("error");
     document.getElementById("error").classList.remove("hidden");
 
-    errorDiv.textContent = error.message; // Display error message
+    errorDiv.textContent = error.message;
   }
 }
 
